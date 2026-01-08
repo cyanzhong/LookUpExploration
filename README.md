@@ -1,6 +1,6 @@
 ## Look Up
 
-![Screenshot.png](/Screenshot.png)
+<img alt="Screenshot.png" src="./Screenshot.png" width=1010>
 
 On a Mac with a trackpad, force-pressing a word in many native apps brings up **Look Up** — a polished popover that feels deeply integrated into the system.
 
@@ -21,11 +21,11 @@ My first attempt was straightforward: trigger the Look Up popover inside one of 
 
 It didn’t take long to notice that the UI is hosted by a `LULookupRemoteViewController`. As expected, it’s implemented using Apple’s “remote view controller” architecture, with most of the UI details abstracted away.
 
-![01.png](/01.png)
+<img alt="01.png" src="./01.png" width=280>
 
 To dig deeper, I turned to tools like [RuntimeBrowser](https://github.com/nst/RuntimeBrowser) and [RuntimeViewer](https://github.com/MxIris-Reverse-Engineering/RuntimeViewer). That’s when I found `LookUp.framework` — a private framework containing a large number of undocumented classes.
 
-![02.png](/02.png)
+<img alt="02.png" src="./02.png" width=325>
 
 At this point, progress stalled. The framework surface area is huge, and without context it’s hard to know where to start. I eventually gave up and went back to playing games for a few days.
 
@@ -35,11 +35,11 @@ Safari also supports Look Up — and **WebKit is open source**.
 
 I searched for “Look Up” in the WebKit codebase and immediately found a trail of relevant references.
 
-![03.png](/03.png)
+<img alt="03.png" src="./03.png" width=570>
 
 Those led me to a component called `DictionaryLookup`. More importantly, I started seeing key concepts repeatedly: `presenter`, `animationController`, and related abstractions.
 
-![04.png](/04.png)
+<img alt="04.png" src="./04.png" width=735>
 
 That rang a bell — `LUPresenter` exists in `LookUp.framework`.
 
@@ -47,7 +47,7 @@ From there, the approach became clear: **symbolic breakpoints**.
 
 I added breakpoints to the suspected presenter and animation entry points, then triggered Look Up repeatedly to see which symbols were hit.
 
-![05.png](/05.png)
+<img alt="05.png" src="./05.png" width=475>
 
 That experiment confirmed the call flow and revealed exactly which APIs are involved.
 
